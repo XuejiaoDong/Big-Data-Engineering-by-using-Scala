@@ -31,11 +31,14 @@ object Ingest extends App {
 
   val ingester = new Ingest[Movie]()
   val source = args.toList match {
-    case Nil => Source.fromResource("movie_metadata_5000.csv")
-    case h :: _ => Source.fromFile(h)
+    /*case Nil => Source.fromResource("movie_metadata_5000.csv")*/
+    case Nil => Source.fromFile("/Data/movie_metadata_5000.csv")
+    /* Hi, please fill the real  path of movie_metadata_500.csv in line35 */
   }
 
-  for (m <- ingester(source)) println(m.properties.mkString(", "))
+  /*for (m <- ingester(source)) println(m.properties.mkString(", "))*/
+  val kiwiMovies = for (m <- ingester(source); if (m.properties(20)=="New Zealand")) yield m
+  println(kiwiMovies.size)
   source.close()
 
   // Please note that an alternative to the definition of source above would be as in the following comment:
