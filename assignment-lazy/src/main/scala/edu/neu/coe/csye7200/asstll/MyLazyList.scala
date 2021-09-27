@@ -406,7 +406,10 @@ object MyLazyList {
     *         <code>x+step</code>, etc.).
     */
   def from(start: Int, step: Int): ListLike[Int] = {
+    /* create an infinite MyLazyList composed of all “start” elements */
     def repeat1[Int](start: => Int): ListLike[Int] = MyLazyList(start, () => repeat1(start))
+    /* zip it with the infinite MyLazyList starting from 0 (0,1,2,3,…), to get a tuple MyLazyList */
+    /* let tuple[1] + tuple[2] * step */
     repeat1(start).zip(MyLazyList(0:Int,()=>MyLazyList from 1)).map(t=>t._1+((t._2)*step))
   } // TO BE IMPLEMENTED
 
