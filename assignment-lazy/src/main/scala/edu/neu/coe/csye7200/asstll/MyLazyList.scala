@@ -405,7 +405,10 @@ object MyLazyList {
     * @return a <code>ListLike[X]</code> with an infinite number of element (whose values are <code>x</code>,
     *         <code>x+step</code>, etc.).
     */
-  def from(start: Int, step: Int): ListLike[Int] = ??? // TO BE IMPLEMENTED
+  def from(start: Int, step: Int): ListLike[Int] = {
+    def repeat1[Int](start: => Int): ListLike[Int] = MyLazyList(start, () => repeat1(start))
+    repeat1(start).zip(MyLazyList(0:Int,()=>MyLazyList from 1)).map(t=>t._1+((t._2)*step))
+  } // TO BE IMPLEMENTED
 
   /**
     * Construct a stream of Integers starting with <code>start</code> and with successive elements being
