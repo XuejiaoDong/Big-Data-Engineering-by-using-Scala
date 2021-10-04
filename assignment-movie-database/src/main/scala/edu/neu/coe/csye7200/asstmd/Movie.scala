@@ -98,7 +98,13 @@ object Movie extends App {
       * @param w a line of input.
       * @return a Try[Movie]
       */
-    def parse(w: String): Try[Movie] = ??? // TO BE IMPLEMENTED
+    def parse(w: String): Try[Movie] = {
+      val ww = w.split(",").toList
+      Try( Movie(ww(11),Format(elements(ww, 0, 19, 26, 3)) ,Production(elements(ww, 20, 22, 8, 23)),
+        Reviews(elements(ww, 25, 27, 21, 18, 12, 2, 13)), Principal(elements(ww, 1, 4)),
+        Principal(elements(ww, 10, 7)), Principal(elements(ww, 6, 24)), Principal(elements(ww, 14, 5)),
+        ww(9).split("""\|""").toList,ww(16).split("""\|""").toList, ww(17)) )
+    } // TO BE IMPLEMENTED
   }
 
   val ingester = new Ingest[Movie]()
@@ -119,9 +125,8 @@ object Movie extends App {
   def elements(list: Seq[String], indices: Int*): List[String] = {
     // Hint: form a new list which is consisted by the elements in list in position indices. Int* means array of Int.
     // 6 points
-    val result: Seq[String] =
+    val result: Seq[String] = ( for ( i<- 0 until indices.size) yield list(indices(i))).toSeq
     // TO BE IMPLEMENTED
-    ???
     result.toList
   }
 
@@ -201,7 +206,20 @@ object Rating {
     */
   // Hint: This should similar to apply method in Object Name. The parameter of apply in case match should be same as case class Rating
   // 13 points
-  def apply(s: String): Rating = ??? // TO BE IMPLEMENTED
+  def apply(s: String): Rating = 
+    val rRating(matches1, matches2, matches3) = s
+    (for (aa <- rRating.unapplySeq(s)) yield for (ss <- aa) yield Option(ss))
+    match {
+      case s => if (matches3 != null) {
+        Rating(matches1.toString, matches3.toIntOption)
+      }
+      else {
+        Rating(matches1, None)
+      }
+      case x => throw ParseException(s"Rating Error")
+    }
+    // TO BE IMPLEMENTED
+  }
 
 }
 
