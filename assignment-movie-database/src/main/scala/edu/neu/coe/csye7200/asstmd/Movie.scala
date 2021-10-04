@@ -206,7 +206,7 @@ object Rating {
     */
   // Hint: This should similar to apply method in Object Name. The parameter of apply in case match should be same as case class Rating
   // 13 points
-  def apply(s: String): Rating = 
+  def apply(s: String): Rating = {
     val rRating(matches1, matches2, matches3) = s
     (for (aa <- rRating.unapplySeq(s)) yield for (ss <- aa) yield Option(ss))
     match {
